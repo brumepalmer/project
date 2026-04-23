@@ -40,8 +40,11 @@ int main(){
     double dc_offsetB;
     double dc_offsetC;
 
+    int clipA=0;
+    int clipB=0;
+    int clipC=0;
 
- WaveformSample data[1000];
+    WaveformSample data[1000];
     FILE *fp;
     char line[1000];
 
@@ -114,6 +117,37 @@ int main(){
     peak_to_peakB=maxB-minB;
     peak_to_peakC=maxC-minC;
 
+    dc_sumA=0;
+    dc_sumB=0;
+    dc_sumC=0;
+
+    for(int i=0;i<1000;i++) {
+        dc_sumA += data[i].phase_a_voltage;
+        dc_sumB += data[i].phase_b_voltage;
+        dc_sumC += data[i].phase_c_voltage;
+    }
+
+    dc_offsetA=dc_sumA/1000;
+    dc_offsetB=dc_sumB/1000;
+    dc_offsetC=dc_sumC/1000;
+
+    clipA=0;
+    clipB=0;
+    clipC=0;
+
+    for(int i=0;i<1000;i++) {
+        if (data[i].phase_a_voltage >= 324.9 || data[i].phase_a_voltage <= -324.9)
+        {
+            clipA++;
+        }
+        if (data[i].phase_b_voltage >= 324.9 || data[i].phase_b_voltage <= -324.9)
+        {
+            clipB++;
+        }
+        if (data[i].phase_c_voltage >= 324.9 || data[i].phase_c_voltage <= -324.9) {
+            clipC++;
+        }
+    }
 
     printf("Phase a rms = %lf\n",rmsA);
     printf("Phase b rms = %lf\n",rmsB);
@@ -122,6 +156,15 @@ int main(){
     printf("Phase a Peak to Peak = %lf\n",peak_to_peakA);
     printf("Phase B Peak to Peak = %lf\n",peak_to_peakB);
     printf("Phase C Peak to Peak = %lf\n",peak_to_peakC);
+    
+    printf("Phase a dc offset = %lf\n",dc_offsetA);
+    printf("Phase b dc offset = %lf\n",dc_offsetB);
+    printf("Phase c dc offset = %lf\n",dc_offsetC);
+
+    printf("Phase a clipped samples = %d\n",clipA);
+    printf("Phase b clipped samples = %d\n",clipB);
+    printf("Phase c clipped samples = %d\n",clipC);
+
 
     return 0;
 }
