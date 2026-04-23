@@ -26,6 +26,22 @@ double compute_rms(double values[], int size) {
     return sqrt(sum/size);
 }
 
+double compute_peak_to_peak(double values[], int size) {
+    int i;
+    double max, min;
+
+    max=values[0];
+    min=values[0];
+
+    for(i=1;i<size;i++) {
+        if(values[i] > max)
+            max=values[i];
+        if(values[i] < min)
+            min=values[i];
+    }
+    return max-min;
+}
+
 int main(){
 
     double phase_a_values[1000];
@@ -35,13 +51,6 @@ int main(){
     double rmsA;
     double rmsB;
     double rmsC;
-
-    double maxA;
-    double maxB;
-    double maxC;
-    double minA;
-    double minB;
-    double minC;
 
     double peak_to_peakA;
     double peak_to_peakB;
@@ -100,37 +109,9 @@ int main(){
     rmsB= compute_rms(phase_b_values,1000);
     rmsC= compute_rms(phase_c_values,1000);
 
-    maxA=data[0].phase_a_voltage;
-    maxB=data[0].phase_b_voltage;
-    maxC=data[0].phase_c_voltage;
-    minA=data[0].phase_a_voltage;
-    minB=data[0].phase_b_voltage;
-    minC=data[0].phase_c_voltage;
-
-    for (int i = 0; i < 1000; i++) {
-        if (data[i].timestamp < maxA) {
-            maxA=data[i].phase_a_voltage;
-        }
-        if (data[i].timestamp > maxB) {
-            maxB=data[i].phase_b_voltage;
-        }
-        if (data[i].timestamp < minA) {
-            minA=data[i].phase_a_voltage;
-        }
-        if (data[i].timestamp > minB) {
-            minB=data[i].phase_b_voltage;
-        }
-        if (data[i].timestamp < maxC) {
-            maxC=data[i].phase_c_voltage;
-        }
-        if (data[i].timestamp > maxC) {
-            maxC=data[i].phase_c_voltage;
-        }
-    }
-
-    peak_to_peakA=maxA-minA;
-    peak_to_peakB=maxB-minB;
-    peak_to_peakC=maxC-minC;
+    peak_to_peakA = compute_peak_to_peak(phase_a_values,1000);
+    peak_to_peakB = compute_peak_to_peak(phase_b_values,1000);
+    peak_to_peakC = compute_peak_to_peak(phase_c_values,1000);
 
     dc_sumA=0;
     dc_sumB=0;
@@ -163,6 +144,9 @@ int main(){
             clipC++;
         }
     }
+    toleranceA=0;
+    toleranceB=0;
+    toleranceC=0;
 
     if (rmsA >= 207 && rmsA <= 253) {
         toleranceA=1;
