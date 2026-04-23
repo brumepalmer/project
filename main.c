@@ -114,7 +114,6 @@ int main(){
     peak_to_peakB=maxB-minB;
     peak_to_peakC=maxC-minC;
 
-    
 
     printf("Phase a rms = %lf\n",rmsA);
     printf("Phase b rms = %lf\n",rmsB);
