@@ -66,6 +66,13 @@ int count_clipped(const double values[], int size) {
     return count;
 }
 
+int check_clipped(const double values[], int size) {
+    if (rms >= 207 && rms <= 253) {
+        return 1;
+    }
+    return 0;
+}
+
 int main(){
 
     double phase_a_values[1000];
@@ -142,19 +149,9 @@ int main(){
     clipB= count_clipped(phase_b_values,1000);
     clipC= count_clipped(phase_c_values,1000);
 
-    toleranceA=0;
-    toleranceB=0;
-    toleranceC=0;
-
-    if (rmsA >= 207 && rmsA <= 253) {
-        toleranceA=1;
-    }
-    if (rmsB >= 207 && rmsB <= 253) {
-        toleranceB=1;
-    }
-    if (rmsC >= 207 && rmsC <= 253) {
-        toleranceC=1;
-    }
+    toleranceA=check_clipped(phase_a_values,1000);
+    toleranceB=check_clipped(phase_b_values,1000);
+    toleranceC=check_clipped(phase_c_values,1000);
 
     out_file = fopen("results.txt","w");
     if (out_file == NULL) {
