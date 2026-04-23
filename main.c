@@ -54,6 +54,18 @@ double compute_dc_offset(const double values[], int size) {
     return sum/size;
 }
 
+int count_clipped(const double values[], int size) {
+    int i;
+    int count=0;
+    count =0;
+    for(i=0;i<size;i++) {
+        if (values[i] >=324.9|| values[i] <=324.9) {
+            count++;
+        }
+    }
+    return count;
+}
+
 int main(){
 
     double phase_a_values[1000];
@@ -126,23 +138,10 @@ int main(){
     dc_offsetB= compute_dc_offset(phase_b_values,1000);
     dc_offsetC= compute_dc_offset(phase_c_values,1000);
 
-    clipA=0;
-    clipB=0;
-    clipC=0;
+    clipA= count_clipped(phase_a_values,1000);
+    clipB= count_clipped(phase_b_values,1000);
+    clipC= count_clipped(phase_c_values,1000);
 
-    for(int i=0;i<1000;i++) {
-        if (data[i].phase_a_voltage >= 324.9 || data[i].phase_a_voltage <= -324.9)
-        {
-            clipA++;
-        }
-        if (data[i].phase_b_voltage >= 324.9 || data[i].phase_b_voltage <= -324.9)
-        {
-            clipB++;
-        }
-        if (data[i].phase_c_voltage >= 324.9 || data[i].phase_c_voltage <= -324.9) {
-            clipC++;
-        }
-    }
     toleranceA=0;
     toleranceB=0;
     toleranceC=0;
