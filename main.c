@@ -1,77 +1,6 @@
-#include <math.h>
+#include "waveform.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct
-{
-    double timestamp;
-    double phase_a_voltage;
-    double phase_b_voltage;
-    double phase_c_voltage;
-    double line_current;
-    double frequency;
-    double power_factor;
-    double thd_percent;
-} WaveformSample;
-
-double compute_rms(const double values[], int size) {
-    int i;
-    double sum;
-
-    sum=0;
-
-    for(i=0;i<size;i++) {
-        sum += values[i] * values[i];
-    }
-    return sqrt(sum/size);
-}
-
-double compute_peak_to_peak(const double values[], int size) {
-    int i;
-    double max, min;
-
-    max=values[0];
-    min=values[0];
-
-    for(i=1;i<size;i++) {
-        if(values[i] > max)
-            max=values[i];
-        if(values[i] < min)
-            min=values[i];
-    }
-    return max-min;
-}
-
-double compute_dc_offset(const double values[], int size) {
-    int i;
-    double sum;
-    sum=0;
-
-    for(i=0;i<size;i++) {
-        sum += values[i];
-    }
-
-    return sum/size;
-}
-
-int count_clipped(const double values[], int size) {
-    int i;
-    int count=0;
-    count =0;
-    for(i=0;i<size;i++) {
-        if (values[i] >=324.9|| values[i] <=324.9) {
-            count++;
-        }
-    }
-    return count;
-}
-
-int check_clipped(const double values[], int size) {
-    if (rms >= 207 && rms <= 253) {
-        return 1;
-    }
-    return 0;
-}
 
 int main(){
 
@@ -79,25 +8,15 @@ int main(){
     double phase_b_values[1000];
     double phase_c_values[1000];
 
-    double rmsA;
-    double rmsB;
-    double rmsC;
+    double rmsA,rmsB,rmsC;
 
-    double peak_to_peakA;
-    double peak_to_peakB;
-    double peak_to_peakC;
+    double peak_to_peakA,peak_to_peakB,peak_to_peakC;
 
-    double dc_offsetA;
-    double dc_offsetB;
-    double dc_offsetC;
+    double dc_offsetA,dc_offsetB,dc_offsetC;
 
-    int clipA;
-    int clipB;
-    int clipC;
+    int clipA,clipB,clipC;
 
-    int toleranceA;
-    int toleranceB;
-    int toleranceC;
+    int toleranceA,toleranceB,toleranceC;
 
     WaveformSample data[1000];
     FILE *fp;
@@ -149,9 +68,9 @@ int main(){
     clipB= count_clipped(phase_b_values,1000);
     clipC= count_clipped(phase_c_values,1000);
 
-    toleranceA=check_clipped(phase_a_values,1000);
-    toleranceB=check_clipped(phase_b_values,1000);
-    toleranceC=check_clipped(phase_c_values,1000);
+    toleranceA=check_clipped(rmsA);
+    toleranceB=check_clipped(rmsB);
+    toleranceC=check_clipped(rmsC);
 
     out_file = fopen("results.txt","w");
     if (out_file == NULL) {
