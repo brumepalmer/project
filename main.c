@@ -14,7 +14,7 @@ typedef struct
     double thd_percent;
 } WaveformSample;
 
-double compute_rms(double values[], int size) {
+double compute_rms(const double values[], int size) {
     int i;
     double sum;
 
@@ -26,7 +26,7 @@ double compute_rms(double values[], int size) {
     return sqrt(sum/size);
 }
 
-double compute_peak_to_peak(double values[], int size) {
+double compute_peak_to_peak(const double values[], int size) {
     int i;
     double max, min;
 
@@ -40,6 +40,18 @@ double compute_peak_to_peak(double values[], int size) {
             min=values[i];
     }
     return max-min;
+}
+
+double compute_dc_offset(const double values[], int size) {
+    int i;
+    double sum;
+    sum=0;
+
+    for(i=0;i<size;i++) {
+        sum += values[i];
+    }
+
+    return sum/size;
 }
 
 int main(){
@@ -56,9 +68,6 @@ int main(){
     double peak_to_peakB;
     double peak_to_peakC;
 
-    double dc_sumA;
-    double dc_sumB;
-    double dc_sumC;
     double dc_offsetA;
     double dc_offsetB;
     double dc_offsetC;
@@ -113,19 +122,9 @@ int main(){
     peak_to_peakB = compute_peak_to_peak(phase_b_values,1000);
     peak_to_peakC = compute_peak_to_peak(phase_c_values,1000);
 
-    dc_sumA=0;
-    dc_sumB=0;
-    dc_sumC=0;
-
-    for(int i=0;i<1000;i++) {
-        dc_sumA += data[i].phase_a_voltage;
-        dc_sumB += data[i].phase_b_voltage;
-        dc_sumC += data[i].phase_c_voltage;
-    }
-
-    dc_offsetA=dc_sumA/1000;
-    dc_offsetB=dc_sumB/1000;
-    dc_offsetC=dc_sumC/1000;
+    dc_offsetA= compute_dc_offset(phase_a_values,1000);
+    dc_offsetB= compute_dc_offset(phase_b_values,1000);
+    dc_offsetC= compute_dc_offset(phase_c_values,1000);
 
     clipA=0;
     clipB=0;
