@@ -14,20 +14,34 @@ typedef struct
     double thd_percent;
 } WaveformSample;
 
-int main(){
-    double sumA=0;
-    double rmsA=0;
-    double sumB=0;
-    double rmsB=0;
-    double sumC=0;
-    double rmsC=0;
+double compute_rms(double values[], int size) {
+    int i;
+    double sum;
 
-    double maxA=0;
-    double maxB=0;
-    double maxC=0;
-    double minA=0;
-    double minB=0;
-    double minC=0;
+    sum=0;
+
+    for(i=0;i<size;i++) {
+        sum += values[i] * values[i];
+    }
+    return sqrt(sum/size);
+}
+
+int main(){
+
+    double phase_a_values[1000];
+    double phase_b_values[1000];
+    double phase_c_values[1000];
+
+    double rmsA;
+    double rmsB;
+    double rmsC;
+
+    double maxA;
+    double maxB;
+    double maxC;
+    double minA;
+    double minB;
+    double minC;
 
     double peak_to_peakA;
     double peak_to_peakB;
@@ -40,13 +54,13 @@ int main(){
     double dc_offsetB;
     double dc_offsetC;
 
-    int clipA=0;
-    int clipB=0;
-    int clipC=0;
+    int clipA;
+    int clipB;
+    int clipC;
 
-    int toleranceA =0;
-    int toleranceB =0;
-    int toleranceC =0;
+    int toleranceA;
+    int toleranceB;
+    int toleranceC;
 
     WaveformSample data[1000];
     FILE *fp;
@@ -76,19 +90,15 @@ int main(){
 
     fclose(fp);
 
-    sumA=0;
-    sumB=0;
-    sumC=0;
-
     for(int i=0;i<1000;i++) {
-        sumA=sumA+data[i].phase_a_voltage*data[i].phase_a_voltage;
-        sumB=sumB+data[i].phase_b_voltage*data[i].phase_b_voltage;
-        sumC=sumC+data[i].phase_c_voltage*data[i].phase_c_voltage;
+        phase_a_values[i] = data[i].phase_a_voltage;
+        phase_b_values[i] = data[i].phase_b_voltage;
+        phase_c_values[i] = data[i].phase_c_voltage;
     }
 
-    rmsA=sqrt(sumA/1000);
-    rmsB=sqrt(sumB/1000);
-    rmsC=sqrt(sumC/1000);
+    rmsA= compute_rms(phase_a_values,1000);
+    rmsB= compute_rms(phase_b_values,1000);
+    rmsC= compute_rms(phase_c_values,1000);
 
     maxA=data[0].phase_a_voltage;
     maxB=data[0].phase_b_voltage;
