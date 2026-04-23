@@ -50,6 +50,7 @@ int main(){
 
     WaveformSample data[1000];
     FILE *fp;
+    FILE *out_file;
     char line[1000];
 
     fp=fopen("power_quality_log.csv","r");
@@ -163,37 +164,48 @@ int main(){
         toleranceC=1;
     }
 
-    printf("Phase a rms = %lf\n",rmsA);
-    printf("Phase b rms = %lf\n",rmsB);
-    printf("Phase c rms = %lf\n",rmsC);
+    out_file = fopen("results.txt","w");
+    if (out_file == NULL) {
+        printf("Error opening file\n");
+        return 1;
+    }
 
-    printf("Phase a Peak to Peak = %lf\n",peak_to_peakA);
-    printf("Phase B Peak to Peak = %lf\n",peak_to_peakB);
-    printf("Phase C Peak to Peak = %lf\n",peak_to_peakC);
+    fprintf(out_file,"Phase a rms = %lf\n",rmsA);
+    fprintf(out_file,"Phase b rms = %lf\n",rmsB);
+    fprintf(out_file,"Phase c rms = %lf\n",rmsC);
 
-    printf("Phase a dc offset = %lf\n",dc_offsetA);
-    printf("Phase b dc offset = %lf\n",dc_offsetB);
-    printf("Phase c dc offset = %lf\n",dc_offsetC);
+    fprintf(out_file,"Phase a Peak to Peak = %lf\n",peak_to_peakA);
+    fprintf(out_file,"Phase B Peak to Peak = %lf\n",peak_to_peakB);
+    fprintf(out_file,"Phase C Peak to Peak = %lf\n",peak_to_peakC);
 
-    printf("Phase a clipped samples = %d\n",clipA);
-    printf("Phase b clipped samples = %d\n",clipB);
-    printf("Phase c clipped samples = %d\n",clipC);
+    fprintf(out_file,"Phase a dc offset = %lf\n",dc_offsetA);
+    fprintf(out_file,"Phase b dc offset = %lf\n",dc_offsetB);
+    fprintf(out_file,"Phase c dc offset = %lf\n",dc_offsetC);
+
+    fprintf(out_file,"Phase a clipped samples = %d\n",clipA);
+    fprintf(out_file,"Phase b clipped samples = %d\n",clipB);
+    fprintf(out_file,"Phase c clipped samples = %d\n",clipC);
 
     if (toleranceA ==1) {
-        printf("Phase a rms with Tolerance: Yes\n");
+        fprintf(out_file,"Phase a rms with Tolerance: Yes\n");
     }
     else {
-        printf("Phase a rms with Tolerance: No\n");
+        fprintf(out_file,"Phase a rms with Tolerance: No\n");
     }
     if (toleranceB ==1) {
-        printf("Phase b rms with Tolerance: Yes\n");
+        fprintf(out_file,"Phase b rms with Tolerance: Yes\n");
     }
     else {
-        printf("Phase b rms with Tolerance: No\n");
+        fprintf(out_file,"Phase b rms with Tolerance: No\n");
     }
     if (toleranceC ==1) {
-        printf("Phase c rms with Tolerance: Yes\n");
+        fprintf(out_file,"Phase c rms with Tolerance: Yes\n");
     }
+    else {
+        fprintf(out_file,"Phase c rms with Tolerance: No\n");
+    }
+
+    fclose(out_file);
 
     return 0;
 }
