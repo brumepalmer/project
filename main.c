@@ -9,13 +9,9 @@ int main(){
     double phase_c_values[1000];
 
     double rmsA,rmsB,rmsC;
-
     double peak_to_peakA,peak_to_peakB,peak_to_peakC;
-
     double dc_offsetA,dc_offsetB,dc_offsetC;
-
     int clipA,clipB,clipC;
-
     int toleranceA,toleranceB,toleranceC;
 
     WaveformSample data[1000];
