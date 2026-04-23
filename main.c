@@ -44,6 +44,10 @@ int main(){
     int clipB=0;
     int clipC=0;
 
+    int toleranceA =0;
+    int toleranceB =0;
+    int toleranceC =0;
+
     WaveformSample data[1000];
     FILE *fp;
     char line[1000];
@@ -149,6 +153,16 @@ int main(){
         }
     }
 
+    if (rmsA >= 207 && rmsA <= 253) {
+        toleranceA=1;
+    }
+    if (rmsB >= 207 && rmsB <= 253) {
+        toleranceB=1;
+    }
+    if (rmsC >= 207 && rmsC <= 253) {
+        toleranceC=1;
+    }
+
     printf("Phase a rms = %lf\n",rmsA);
     printf("Phase b rms = %lf\n",rmsB);
     printf("Phase c rms = %lf\n",rmsC);
@@ -156,7 +170,7 @@ int main(){
     printf("Phase a Peak to Peak = %lf\n",peak_to_peakA);
     printf("Phase B Peak to Peak = %lf\n",peak_to_peakB);
     printf("Phase C Peak to Peak = %lf\n",peak_to_peakC);
-    
+
     printf("Phase a dc offset = %lf\n",dc_offsetA);
     printf("Phase b dc offset = %lf\n",dc_offsetB);
     printf("Phase c dc offset = %lf\n",dc_offsetC);
@@ -165,6 +179,21 @@ int main(){
     printf("Phase b clipped samples = %d\n",clipB);
     printf("Phase c clipped samples = %d\n",clipC);
 
+    if (toleranceA ==1) {
+        printf("Phase a rms with Tolerance: Yes\n");
+    }
+    else {
+        printf("Phase a rms with Tolerance: No\n");
+    }
+    if (toleranceB ==1) {
+        printf("Phase b rms with Tolerance: Yes\n");
+    }
+    else {
+        printf("Phase b rms with Tolerance: No\n");
+    }
+    if (toleranceC ==1) {
+        printf("Phase c rms with Tolerance: Yes\n");
+    }
 
     return 0;
 }
