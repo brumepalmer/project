@@ -1,6 +1,7 @@
 #include "waveform.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "io.h"
 
 int main(){
 
@@ -15,32 +16,10 @@ int main(){
     int toleranceA,toleranceB,toleranceC;
 
     WaveformSample data[1000];
-    FILE *fp;
-    FILE *out_file;
-    char line[1000];
 
-    fp=fopen("power_quality_log.csv","r");
-    if(fp==NULL) {
-        printf("Cannot open file\n");
+    if (read_csv_file("power_quality_log.csv",data,1000) == 1) {
         return 1;
-
     }
-    fgets(line,sizeof(line),fp);
-
-    for(int i=0;i<1000;i++)
-    {
-        fscanf(fp,"%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf",
-            &data[i].timestamp,
-            &data[i].phase_a_voltage,
-            &data[i].phase_b_voltage,
-            &data[i].phase_c_voltage,
-            &data[i].line_current,
-            &data[i].frequency,
-            &data[i].power_factor,
-            &data[i].thd_percent);
-    }
-
-    fclose(fp);
 
     for(int i=0;i<1000;i++) {
         phase_a_values[i] = data[i].phase_a_voltage;
@@ -68,48 +47,14 @@ int main(){
     toleranceB=check_clipped(rmsB);
     toleranceC=check_clipped(rmsC);
 
-    out_file = fopen("results.txt","w");
-    if (out_file == NULL) {
-        printf("Error opening file\n");
-        return 1;
-    }
-
-    fprintf(out_file,"Phase a rms = %lf\n",rmsA);
-    fprintf(out_file,"Phase b rms = %lf\n",rmsB);
-    fprintf(out_file,"Phase c rms = %lf\n",rmsC);
-
-    fprintf(out_file,"Phase a Peak to Peak = %lf\n",peak_to_peakA);
-    fprintf(out_file,"Phase B Peak to Peak = %lf\n",peak_to_peakB);
-    fprintf(out_file,"Phase C Peak to Peak = %lf\n",peak_to_peakC);
-
-    fprintf(out_file,"Phase a dc offset = %lf\n",dc_offsetA);
-    fprintf(out_file,"Phase b dc offset = %lf\n",dc_offsetB);
-    fprintf(out_file,"Phase c dc offset = %lf\n",dc_offsetC);
-
-    fprintf(out_file,"Phase a clipped samples = %d\n",clipA);
-    fprintf(out_file,"Phase b clipped samples = %d\n",clipB);
-    fprintf(out_file,"Phase c clipped samples = %d\n",clipC);
-
-    if (toleranceA ==1) {
-        fprintf(out_file,"Phase a rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(out_file,"Phase a rms with Tolerance: No\n");
-    }
-    if (toleranceB ==1) {
-        fprintf(out_file,"Phase b rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(out_file,"Phase b rms with Tolerance: No\n");
-    }
-    if (toleranceC ==1) {
-        fprintf(out_file,"Phase c rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(out_file,"Phase c rms with Tolerance: No\n");
-    }
-
-    fclose(out_file);
+   if (write_results_file("results.txt",
+                           rmsA,rmsB,rmsC,
+                           peak_to_peakA,peak_to_peakB,peak_to_peakC,
+                           dc_offsetA,dc_offsetB,dc_offsetC,
+                           clipA,clipB,clipC,
+                           toleranceA,toleranceB,toleranceC) == 0) {
+       return 1;
+   }
 
     return 0;
 }
