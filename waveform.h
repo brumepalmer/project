@@ -18,5 +18,7 @@ double compute_peak_to_peak(const double values[], int size);
 double compute_dc_offset(const double values[], int size);
 int count_clipped(const double values[], int size);
 int check_clipped(const double values);
+double compute_variance(double values[], int size);
+double compute_standard_deviation(double values[], int size);
 
 #endif

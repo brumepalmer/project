@@ -39,7 +39,9 @@ double rmsA,double rmsB,double rmsC,
     double peak_to_peakA,double peak_to_peakB,double peak_to_peakC,
     double dc_offsetA,double dc_offsetB,double dc_offsetC,
     int clipA,int clipB,int clipC,
-    int toleranceA,int toleranceB,int toleranceC)
+    int toleranceA,int toleranceB,int toleranceC,
+    double varA,double varB,double varC,
+    double stdA,double stdB,double stdC)
 {
     FILE *outFile;
     outFile=fopen(filename,"w");
@@ -53,17 +55,25 @@ double rmsA,double rmsB,double rmsC,
     fprintf(outFile,"Phase b rms = %lf\n",rmsB);
     fprintf(outFile,"Phase c rms = %lf\n",rmsC);
 
+    fprintf(outFile, "\n");
+
     fprintf(outFile,"Phase a Peak to Peak = %lf\n",peak_to_peakA);
     fprintf(outFile,"Phase B Peak to Peak = %lf\n",peak_to_peakB);
     fprintf(outFile,"Phase C Peak to Peak = %lf\n",peak_to_peakC);
+
+    fprintf(outFile, "\n");
 
     fprintf(outFile,"Phase a dc offset = %lf\n",dc_offsetA);
     fprintf(outFile,"Phase b dc offset = %lf\n",dc_offsetB);
     fprintf(outFile,"Phase c dc offset = %lf\n",dc_offsetC);
 
+    fprintf(outFile, "\n");
+
     fprintf(outFile,"Phase a clipped samples = %d\n",clipA);
     fprintf(outFile,"Phase b clipped samples = %d\n",clipB);
     fprintf(outFile,"Phase c clipped samples = %d\n",clipC);
+
+    fprintf(outFile, "\n");
 
     if (toleranceA ==1) {
         fprintf(outFile,"Phase a rms with Tolerance: Yes\n");
@@ -83,6 +93,18 @@ double rmsA,double rmsB,double rmsC,
     else {
         fprintf(outFile,"Phase c rms with Tolerance: No\n");
     }
+
+    fprintf(outFile, "\n");
+
+    fprintf(outFile, "Phase A Variance = %lf\n", varA);
+    fprintf(outFile, "Phase B Variance = %lf\n", varB);
+    fprintf(outFile, "Phase C Variance = %lf\n", varC);
+
+    fprintf(outFile, "\n");
+
+    fprintf(outFile, "Phase A Standard Deviation = %lf\n", stdA);
+    fprintf(outFile, "Phase B Standard Deviation = %lf\n", stdB);
+    fprintf(outFile, "Phase C Standard Deviation = %lf\n", stdC);
 
     fclose(outFile);
     return 1;

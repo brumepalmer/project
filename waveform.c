@@ -46,7 +46,7 @@ int count_clipped(const double values[], int size) {
     int count=0;
     count =0;
     for(i=0;i<size;i++) {
-        if (values[i] >=324.9|| values[i] <=324.9) {
+        if (values[i] >=324.9|| values[i] <=-324.9) {
             count++;
         }
     }
@@ -58,4 +58,26 @@ int check_clipped(const double rms) {
         return 1;
     }
     return 0;
+}
+
+double compute_variance(double values[], int size)
+{
+    int i;
+    double mean;
+    double sum;
+
+    mean = compute_dc_offset(values, size);
+    sum = 0;
+
+    for (i = 0; i < size; i++)
+    {
+        sum += (values[i] - mean) * (values[i] - mean);
+    }
+
+    return sum / size;
+}
+
+double compute_standard_deviation(double values[], int size)
+{
+    return sqrt(compute_variance(values, size));
 }

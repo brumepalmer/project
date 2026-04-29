@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "io.h"
 
+
 int main(){
 
     double phase_a_values[1000];
@@ -14,10 +15,12 @@ int main(){
     double dc_offsetA,dc_offsetB,dc_offsetC;
     int clipA,clipB,clipC;
     int toleranceA,toleranceB,toleranceC;
+    double varA,varB,varC;
+    double stdA,stdB,stdC;
 
     WaveformSample data[1000];
 
-    if (read_csv_file("power_quality_log.csv",data,1000) == 1) {
+    if (read_csv_file("power_quality_log.csv",data,1000) == 0) {
         return 1;
     }
 
@@ -47,12 +50,22 @@ int main(){
     toleranceB=check_clipped(rmsB);
     toleranceC=check_clipped(rmsC);
 
+    varA = compute_variance(phase_a_values,1000);
+    varB = compute_variance(phase_b_values,1000);
+    varC = compute_variance(phase_c_values,1000);
+
+    stdA = compute_standard_deviation(phase_a_values,1000);
+    stdB = compute_standard_deviation(phase_b_values,1000);
+    stdC = compute_standard_deviation(phase_c_values,1000);
+
    if (write_results_file("results.txt",
                            rmsA,rmsB,rmsC,
                            peak_to_peakA,peak_to_peakB,peak_to_peakC,
                            dc_offsetA,dc_offsetB,dc_offsetC,
                            clipA,clipB,clipC,
-                           toleranceA,toleranceB,toleranceC) == 0) {
+                           toleranceA,toleranceB,toleranceC,
+                           varA,varB,varC,
+                           stdA,stdB,stdC) == 0) {
        return 1;
    }
 
