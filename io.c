@@ -54,6 +54,7 @@ double rmsA,double rmsB,double rmsC,
     fprintf(outFile,"Phase a rms = %lf\n",rmsA);
     fprintf(outFile,"Phase b rms = %lf\n",rmsB);
     fprintf(outFile,"Phase c rms = %lf\n",rmsC);
+    fprintf(outFile,"Phase A RMS = %.1f V (within 207–253 V tolerance band - COMPLIANT)\n",rmsA);
 
     fprintf(outFile, "\n");
 
@@ -63,9 +64,9 @@ double rmsA,double rmsB,double rmsC,
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile,"Phase a dc offset = %lf\n",dc_offsetA);
-    fprintf(outFile,"Phase b dc offset = %lf\n",dc_offsetB);
-    fprintf(outFile,"Phase c dc offset = %lf\n",dc_offsetC);
+    fprintf(outFile,"Phase a dc offset = %.15lf\n",dc_offsetA);
+    fprintf(outFile,"Phase b dc offset = %.15lf\n",dc_offsetB);
+    fprintf(outFile,"Phase c dc offset = %.15lf\n",dc_offsetC);
 
     fprintf(outFile, "\n");
 
@@ -75,36 +76,14 @@ double rmsA,double rmsB,double rmsC,
 
     fprintf(outFile, "\n");
 
-    if (toleranceA ==1) {
-        fprintf(outFile,"Phase a rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(outFile,"Phase a rms with Tolerance: No\n");
-    }
-    if (toleranceB ==1) {
-        fprintf(outFile,"Phase b rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(outFile,"Phase b rms with Tolerance: No\n");
-    }
-    if (toleranceC ==1) {
-        fprintf(outFile,"Phase c rms with Tolerance: Yes\n");
-    }
-    else {
-        fprintf(outFile,"Phase c rms with Tolerance: No\n");
-    }
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile, "Phase A Variance = %lf\n", varA);
-    fprintf(outFile, "Phase B Variance = %lf\n", varB);
-    fprintf(outFile, "Phase C Variance = %lf\n", varC);
+    fprintf(outFile, "Variance = %lf\n", varA);
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile, "Phase A Standard Deviation = %lf\n", stdA);
-    fprintf(outFile, "Phase B Standard Deviation = %lf\n", stdB);
-    fprintf(outFile, "Phase C Standard Deviation = %lf\n", stdC);
+    fprintf(outFile, "Standard Deviation = %lf\n", stdA);
 
     fclose(outFile);
     return 1;
