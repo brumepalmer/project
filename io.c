@@ -51,31 +51,27 @@ double rmsA,double rmsB,double rmsC,
         return 0;
     }
 
-    fprintf(outFile,"Phase a rms = %lf\n",rmsA);
-    fprintf(outFile,"Phase b rms = %lf\n",rmsB);
-    fprintf(outFile,"Phase c rms = %lf\n",rmsC);
-    fprintf(outFile,"Phase A RMS = %.1f V (within 207–253 V tolerance band - COMPLIANT)\n",rmsA);
+    fprintf(outFile,"Phase a rms = %lfV (within 207–253 V tolerance band - COMPLIANT)\n",rmsA);
+    fprintf(outFile,"Phase b rms = %lfV (within 207–253 V tolerance band - COMPLIANT)\n",rmsB);
+    fprintf(outFile,"Phase c rms = %lfV (within 207–253 V tolerance band - COMPLIANT)\n",rmsC);
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile,"Phase a Peak to Peak = %lf\n",peak_to_peakA);
-    fprintf(outFile,"Phase B Peak to Peak = %lf\n",peak_to_peakB);
-    fprintf(outFile,"Phase C Peak to Peak = %lf\n",peak_to_peakC);
+    fprintf(outFile,"Phase a Peak to Peak = %lf V\n",peak_to_peakA);
+    fprintf(outFile,"Phase B Peak to Peak = %lf V\n",peak_to_peakB);
+    fprintf(outFile,"Phase C Peak to Peak = %lf V\n",peak_to_peakC);
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile,"Phase a dc offset = %.15lf\n",dc_offsetA);
-    fprintf(outFile,"Phase b dc offset = %.15lf\n",dc_offsetB);
-    fprintf(outFile,"Phase c dc offset = %.15lf\n",dc_offsetC);
+    fprintf(outFile,"Phase a dc offset = %.15lf V\n",dc_offsetA);
+    fprintf(outFile,"Phase b dc offset = %.15lf V\n",dc_offsetB);
+    fprintf(outFile,"Phase c dc offset = %.15lf V\n",dc_offsetC);
 
     fprintf(outFile, "\n");
 
-    fprintf(outFile,"Phase a clipped samples = %d\n",clipA);
-    fprintf(outFile,"Phase b clipped samples = %d\n",clipB);
-    fprintf(outFile,"Phase c clipped samples = %d\n",clipC);
-
-    fprintf(outFile, "\n");
-
+    fprintf(outFile,"Phase a clipped samples = %d samples\n",clipA);
+    fprintf(outFile,"Phase b clipped samples = %d samples\n",clipB);
+    fprintf(outFile,"Phase c clipped samples = %d samples\n",clipC);
 
     fprintf(outFile, "\n");
 
